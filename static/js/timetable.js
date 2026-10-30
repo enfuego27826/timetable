@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const requestData = window.staticTimetableRequest || window.fetch.bind(window);
     let selectedCourses = [];
     let courseData = [];
     let totalCredits = 0;
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Load courses from API
     function loadCourses() {
-        fetch('/api/courses')
+        requestData('/api/courses')
             .then(response => response.json())
             .then(data => {
                 courseData = data.courses;
@@ -44,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     savedCourses = [];
                 }
                 selectedCourses = savedCourses.filter(code => courseData.some(c => c.code === code));
-                totalCredits = courseData.reduce((s, c) => selectedCourses.includes(c.code) ? s + parseInt(c.credits || 0) : s, 0);
+                totalCredits = courseData.reduce((s, c) => selectedCourses.includes(c.code) ? s + parseFloat(c.credits || 0) : s, 0);
                 updateTotalCredits();
                 updateSelectedCourses();
                 renderCourseTable();
@@ -146,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Handle course selection/deselection
     function handleCourseSelection(e) {
         const { courseCode, credits } = e.target.dataset;
-        const creditsNum = parseInt(credits);
+        const creditsNum = parseFloat(credits);
         
         if (e.target.checked) {
             if (!selectedCourses.includes(courseCode)) {
@@ -230,7 +231,6 @@ document.addEventListener('DOMContentLoaded', function() {
         elements.timetableContainer.innerHTML = '';
         elements.downloadOptions.style.display = 'none';
         elements.selectedCoursesContainer.style.display = 'none';
-        elements.suggestedCoursesContainer.style.display = 'none';
         showMessage('All courses deselected.', 'success');
     }
     
@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
         updateSelectedCourses();
         elements.timetableContainer.innerHTML = '<div class="loader" style="display:block;"></div>';
         
-        fetch('/api/timetable', {
+        requestData('/api/timetable', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ courses: selectedCourses })
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         showMessage('Generating calendar file...', 'success');
         
-        fetch('/api/download-ics', {
+        requestData('/api/download-ics', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ courses: selectedCourses })
@@ -441,7 +441,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        fetch('/api/available-courses', {
+        requestData('/api/available-courses', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ courses: selectedCourses })

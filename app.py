@@ -4,10 +4,10 @@ import uuid
 from datetime import datetime, timedelta
 
 import pandas as pd
-from flask import Flask, jsonify, render_template, request, Response
+from flask import Flask, jsonify, render_template, request, Response, send_file
 from flask_cors import CORS
 from icalendar import Calendar, Event
-from csv_filter import get_available_courses 
+from csv_filter import TIMETABLE_SOURCE, get_available_courses, load_timetable
 
 app = Flask(__name__, template_folder="templates")
 app.secret_key = os.urandom(24)
@@ -18,7 +18,7 @@ CORS(app, origins="*", methods=["GET", "POST"])
 # Load data
 try:
     time_slots = pd.read_csv("Time Slots.csv")
-    timetable_data = pd.read_csv("Updated_Processed_Timetable.csv")
+    timetable_data = load_timetable()
     time_labels = pd.read_csv("Time Slots.csv").iloc[:, 0].tolist()
 except Exception:
     time_slots = pd.DataFrame()
@@ -29,6 +29,11 @@ except Exception:
 @app.route("/")
 def index():
     return render_template("index.html", session_id=str(uuid.uuid4()))
+
+
+@app.route("/source-timetable.csv")
+def download_source():
+    return send_file(TIMETABLE_SOURCE, mimetype="text/csv", as_attachment=True)
 
 
 @app.route("/api/courses")
@@ -113,7 +118,7 @@ def available_courses():
     try:
         data = request.get_json()
         selected_courses = data.get('courses', [])
-        matches = get_available_courses(selected_courses, 'Timetable.csv')
+        matches = get_available_courses(selected_courses)
         
         return jsonify({
             'success': True, 
@@ -228,7 +233,7 @@ def clean_course_info(content):
     clean_parts = []
     for part in parts:
         # Skip if it matches Course Number pattern (e.g., CS101, MATH201)
-        if not re.match(r"^[A-Z]{1,4}\d+$", part.strip()):
+        if not re.match(r"^[A-Z]{1,4}\d+(?:\s*\([^)]*\))?$", part.strip()):
             clean_parts.append(part)
 
     return ", ".join(clean_parts) if clean_parts else None

@@ -1,13 +1,16 @@
 import pandas as pd
 import re
 import argparse
+from pathlib import Path
 
-def process_timetable(input_file='Timetable.csv', output_file='Updated_Processed_Timetable.csv'):
+TIMETABLE_SOURCE = Path(__file__).resolve().parent / 'Timetable, Sem-II, 2026-27 - Time table.csv'
+
+
+def load_timetable(input_file=TIMETABLE_SOURCE):
     # Load the uploaded file
     df = pd.read_csv(input_file)
 
     df = df[df['Course Number'].str.len() <= 15]
-    column_names = list(df.columns)
 
     df = df.drop_duplicates(subset=['Course Number'], keep='first')
 
@@ -35,6 +38,11 @@ def process_timetable(input_file='Timetable.csv', output_file='Updated_Processed
         df[[col, loc_col]] = pd.DataFrame(df[col].apply(extract_location).tolist(), index=df.index)
 
     df.reset_index(drop=True, inplace=True)
+    return df
+
+
+def process_timetable(input_file=TIMETABLE_SOURCE, output_file='Updated_Processed_Timetable.csv'):
+    df = load_timetable(input_file)
     df.to_csv(output_file, index=False)
     print(f"Processed timetable saved to {output_file}")
 
@@ -51,7 +59,7 @@ def extract_slots(text):
                 slots.add(s)
     return slots
 
-def get_available_courses(selected_courses, file_path='Timetable.csv'):
+def get_available_courses(selected_courses, file_path=TIMETABLE_SOURCE):
     try:
         df = pd.read_csv(file_path)
     except FileNotFoundError:
@@ -100,7 +108,7 @@ def get_available_courses(selected_courses, file_path='Timetable.csv'):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input", default="Timetable.csv")
+    parser.add_argument("--input", default=TIMETABLE_SOURCE)
     parser.add_argument("--output", default="Updated_Processed_Timetable.csv")
     args = parser.parse_args()
     process_timetable(args.input, args.output)

@@ -5,6 +5,7 @@ import pandas as pd
 import pytest
 
 from app import app, clean_course_info, create_timetable
+from csv_filter import load_timetable
 
 
 @pytest.fixture
@@ -266,6 +267,32 @@ class TestCreateTimetable:
 
 class TestIntegration:
     """Integration tests for the complete application."""
+
+    def test_semester_ii_source(self, client):
+        """The course list, generator and suggestions use the Semester II CSV."""
+        code = "MA 104 (E)"
+        courses = client.get("/api/courses").get_json()["courses"]
+        assert any(course["code"] == code for course in courses)
+
+        slots = pd.DataFrame({"Monday": ["E1", "E2", "H2"]})
+        with patch("app.time_slots", slots), patch(
+            "app.time_labels", ["08:30 - 09:50", "10:00 - 11:20", "11:30 - 12:50"]
+        ):
+            response = client.post("/api/timetable", json={"courses": [code]})
+        assert response.status_code == 200
+        classes = response.get_json()["monday"]
+        assert len(classes) == 3
+        assert all("Ordinary Differential Equations" in item["class"] for item in classes)
+        assert "Jasubhai Auditorium" in classes[0]["class"]
+
+        response = client.post("/api/available-courses", json={"courses": [code]})
+        assert response.status_code == 200
+        suggestions = response.get_json()["courses"]
+        assert suggestions
+        assert code not in {course["code"] for course in suggestions}
+        assert {course["code"] for course in suggestions}.issubset(
+            set(load_timetable()["Course Number"])
+        )
 
     def test_app_runs_without_csv_files(self, client):
         """Test that the app handles missing CSV files gracefully."""
