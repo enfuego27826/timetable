@@ -1,0 +1,1018 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    text-align: center;
+    background-color: #f4f4f9;
+    color: #333;
+    padding-bottom: 80px; /* Add padding to account for sticky controls */
+    scroll-behavior: smooth; /* Smooth scrolling for the whole page */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+header {
+    background: linear-gradient(135deg, #0066cc, #004080);
+    color: white;
+    padding: 1.2rem 0;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.timetable-link {
+    color: #ffffff;
+    text-decoration: none; 
+    margin-top: 10px;
+    display: inline-block;
+    font-size: 0.9em;
+    opacity: 0.9;
+    transition: all 0.2s ease-in-out; 
+  }
+
+  .timetable-link:hover {
+    text-decoration: underline;
+    opacity: 1; 
+  }
+
+  .timetable-link h1 {
+    color: inherit; 
+    margin: 0;
+  }
+
+.header-subtitle {
+    margin: 5px 0 0 0;
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.pre_image {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    min-height: 100px;
+    margin: 20px 0;
+}
+
+.timetable-container {
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Better scrolling on iOS */
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.timetable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    min-width: 600px; /* Ensure minimum width for content */
+}
+
+.timetable th,
+.timetable td {
+    border: 1px solid #ddd;
+    padding: 5px;
+    text-align: center;
+    max-width: 120px;
+    white-space: normal;
+    word-break: break-word;
+    vertical-align: top;
+    height: auto;
+    min-height: 60px;
+}
+
+.timetable th {
+    background-color: #0066cc;
+    color: white;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.timetable tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.timetable td.time-slot {
+    background-color: #f0f0f0;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.timetable td.clash {
+    background-color: #ff9696;
+}
+
+.course-cell {
+    min-height: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    font-size: 0.85rem;
+    gap: 3px; /* Add spacing between lines */
+}
+
+.course-code {
+    font-weight: bold;
+    color: #0066cc;
+    /* Ensure course code is fully visible */
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: visible;
+    display: block; /* Make sure it's on its own line */
+    width: 100%;
+    text-align: center;
+}
+
+.course-name {
+    font-size: 0.75rem;
+    color: #333;
+    display: block; /* Make sure it's on its own line */
+    width: 100%;
+    text-align: center;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.course-type {
+    font-size: 0.75rem;
+    color: #666;
+    display: block; /* Make sure it's on its own line */
+    width: 100%;
+    text-align: center;
+    margin-top: 1px;
+}
+
+.course-location {
+    font-size: 0.7rem;
+    color: #666;
+    font-style: italic;
+    display: block; /* Make sure it's on its own line */
+    width: 100%;
+    text-align: center;
+    margin-top: 1px;
+}
+
+.course-clash {
+    font-weight: bold;
+    color: #ff0000;
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 2px;
+}
+
+.course-clash-separator {
+    color: #333;
+    font-weight: normal;
+}
+
+.slot-code {
+    font-family: monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #555;
+    display: block;
+    text-align: center;
+    padding: 5px 0;
+}
+
+/* Card styling for consistent UI elements */
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    margin: 20px 0;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* Selected Courses Styling */
+.selected-courses-container {
+    background-color: #f0f7ff;
+    border: 2px solid #0066cc;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 102, 204, 0.1);
+}
+
+.selected-courses-heading {
+    color: #0066cc;
+    margin: 0 0 15px 0;
+    text-align: left;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.selected-courses-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.selected-course-item {
+    background-color: #0066cc;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 102, 204, 0.2);
+}
+
+.selected-course-item:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+    /* Q1RGezEwMGtfZCQkcF9pbl9jMGRlfQ== */
+    box-shadow: 0 4px 8px rgba(0, 102, 204, 0.3);
+}
+
+.selected-course-code {
+    font-weight: bold;
+    font-family: monospace;
+}
+
+.selected-course-name {
+    font-size: 0.85rem;
+    opacity: 0.95;
+}
+
+.selected-course-credits {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    margin-left: auto;
+}
+
+/* Remove course button styling */
+.remove-course-btn {
+    background: none;
+    border: none;
+    color: white;
+    padding: 2px 4px;
+    margin-left: 6px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+    width: 18px;
+    height: 18px;
+    opacity: 0.8;
+}
+
+.remove-course-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* Enhanced controls styling */
+.controls {
+    display: flex;
+    margin-top: 30px;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+    position: relative;
+    z-index: 10;
+    pointer-events: auto;
+    transition: all 0.3s ease;
+}
+
+/* Simplified sticky controls */
+.sticky-controls {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    /* margin: 0; */
+    /* width: 100%; */
+    border-radius: 0;
+    padding: 10px 20px;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+/* Left controls container with credit counter and go to top */
+.left-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin: 0;
+}
+
+/* Credit counter styling */
+.credits-counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0066cc;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    gap: 5px;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.credits-counter span {
+    font-size: 16px;
+}
+
+/* Simplified button styling */
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    gap: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.primary-btn {
+    background-color: #0066cc;
+    color: white;
+}
+
+.primary-btn:hover {
+    background-color: #0056b3;
+}
+
+.secondary-btn {
+    background-color: #dc3545;
+    color: white;
+}
+
+.secondary-btn:hover {
+    background-color: #c82333;
+}
+
+/* Go to top button styling */
+.goto-top-btn {
+    background-color: #6c757d;
+    color: white;
+    padding: 5px 12px;
+}
+
+.goto-top-btn:hover {
+    background-color: #5a6268;
+}
+
+/* Remove back-to-top button since we now have it in the sticky bar */
+.back-to-top {
+    display: none !important;
+}
+
+/* Search styling */
+.search-filter-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 600px;
+    margin: 25px auto 30px;
+    background: #ffffff;
+    border-radius: 50px; /* Gives the premium pill shape */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    border: 1px solid #eaeaea;
+    padding: 4px 8px 4px 20px;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+/* Lights up the entire bar when the user is typing */
+.search-filter-bar:focus-within {
+    box-shadow: 0 6px 20px rgba(0, 102, 204, 0.12);
+    border-color: #0066cc;
+}
+
+.search-section {
+    display: flex;
+    align-items: center;
+    flex: 1; /* Pushes the toggle to the right */
+    position: relative;
+}
+
+.search-icon {
+    color: #999;
+    font-size: 16px;
+}
+
+#search-field {
+    width: 100%;
+    height: 48px;
+    padding: 0 15px;
+    border: none; /* Removes the box around the input itself */
+    background: transparent;
+    font-size: 16px;
+    color: #333;
+    outline: none;
+}
+
+#search-field::placeholder {
+    color: #aaa;
+}
+
+/* Subtle separator line */
+.divider {
+    width: 1px;
+    height: 28px;
+    background-color: #e0e0e0;
+    margin: 0 15px;
+}
+
+.filter-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-right: 5px;
+}
+
+.toggle-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #666;
+    user-select: none;
+}
+
+/* --- Modern UI Switch --- */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1; /* Neutral off-state */
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Depth to the toggle knob */
+}
+
+input:checked + .slider {
+    background-color: #10b981; /* Modern vivid green when active */
+}
+
+input:checked + .slider:before {
+    transform: translateX(20px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+
+.loader {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(0, 102, 204, 0.3);
+    border-radius: 50%;
+    border-top-color: #0066cc;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+.courses-heading {
+    margin: 30px 0 15px;
+    color: #0066cc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 1.3rem;
+}
+
+.courses-table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 5;
+    pointer-events: auto;
+    table-layout: fixed;
+    overflow-x: auto;
+    display: block;
+}
+
+.courses-table th,
+.courses-table td {
+    border: 1px solid #ccc;
+    padding: 12px;
+    text-align: left;
+}
+
+.courses-table th {
+    background-color: #0066cc;
+    color: #ffffff;
+}
+
+.courses-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.courses-table tr:hover {
+    background-color: #f0f7ff;
+    cursor: pointer;
+}
+
+.courses-table tr {
+    position: relative;
+    z-index: 6;
+}
+
+.courses-table input[type="checkbox"] {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.course-checkbox-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    position: relative;
+    z-index: 7;
+}
+
+/* Responsive columns for courses table */
+.courses-table th:nth-child(1), 
+.courses-table td:nth-child(1) {
+    width: 20%;
+}
+
+.courses-table th:nth-child(2), 
+.courses-table td:nth-child(2) {
+    width: 60%;
+}
+
+.courses-table th:nth-child(3), 
+.courses-table td:nth-child(3),
+.courses-table th:nth-child(4), 
+.courses-table td:nth-child(4) {
+    width: 10%;
+}
+
+/* Enhanced download options */
+.download-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 15px 0;
+    background-color: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    /* width: 100%; */
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.3s ease;
+}
+
+.download-options h3 {
+    color: #0066cc;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.download-options .ics-help {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #555;
+    text-align: center;
+}
+
+.download-options .ics-help a {
+    color: #0066cc;
+    text-decoration: underline;
+}
+
+.option-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.option-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 15px;
+    font-weight: 500;
+    width: auto;
+    min-width: 80px;
+}
+
+.option-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.option-button.image {
+    background-color: #28a745;
+    color: white;
+}
+
+.option-button.image:hover {
+    background-color: #218838;
+}
+
+.option-button.excel {
+    background-color: #217346;
+    color: white;
+}
+
+.option-button.excel:hover {
+    background-color: #1a5c38;
+}
+
+.option-button.csv {
+    background-color: #f8991d;
+    color: white;
+}
+
+.option-button.csv:hover {
+    background-color: #e08e1c;
+}
+.option-button.ics {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.option-button.ics:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+}
+
+.message-box {
+    padding: 10px 20px;
+    margin: 10px auto;
+    border-radius: 4px;
+    display: none;
+    width: 80%;
+    max-width: 600px;
+}
+
+.error {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+}
+
+.success {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+footer {
+    background-color: #000000;
+    color: white;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    font-size: 14px;
+    margin-top: 30px;
+}
+
+.footer-section {
+    margin: 10px 20px;
+    text-align: center;
+}
+
+.footer-section a {
+    color: #64b2ff;
+    text-decoration: none;
+}
+
+.footer-section a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+    .btn-text {
+        display: none;
+    }
+    
+    button {
+        padding: 12px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .sticky-controls {
+        padding: 10px;
+    }
+    
+    .left-controls {
+        gap: 10px;
+    }
+    
+    .buttons-container {
+        gap: 10px;
+    }
+    
+    .credits-counter {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    
+    .credits-counter span {
+        font-size: 14px;
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .header-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .container {
+        padding: 0 10px;
+    }
+    
+    .courses-table {
+        font-size: 14px;
+    }
+    
+    .courses-table th, 
+    .courses-table td {
+        padding: 8px 5px;
+    }
+    
+    /* Fix columns for mobile */
+    .courses-table th:nth-child(1), 
+    .courses-table td:nth-child(1) {
+        width: 25%;
+    }
+    
+    .courses-table th:nth-child(2), 
+    .courses-table td:nth-child(2) {
+        width: 45%;
+    }
+    
+    .courses-table th:nth-child(3), 
+    .courses-table td:nth-child(3),
+    .courses-table th:nth-child(4), 
+    .courses-table td:nth-child(4) {
+        width: 15%;
+    }
+    
+    /* Fix download options buttons */
+    .option-buttons {
+        flex-wrap: wrap;
+    }
+    
+    .option-button {
+        flex: 1 1 auto;
+        min-width: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    .sticky-controls {
+        padding: 8px 10px;
+    }
+    
+    button {
+        width: 36px;
+        height: 36px;
+        padding: 8px;
+    }
+    
+    .left-controls {
+        gap: 6px;
+    }
+    
+    .buttons-container {
+        gap: 6px;
+    }
+    
+    header h1 {
+        font-size: 1.3rem;
+    }
+    
+    .header-subtitle {
+        font-size: 0.8rem;
+    }
+    
+    .container {
+        padding: 0 8px;
+    }
+    
+    /* Stack the courses table columns more efficiently */
+    .courses-table th, 
+    .courses-table td {
+        padding: 6px 4px;
+        font-size: 12px;
+    }
+    
+    /* Further optimize column widths */
+    .courses-table th:nth-child(1), 
+    .courses-table td:nth-child(1) {
+        width: 30%;
+    }
+    
+    .courses-table th:nth-child(2), 
+    .courses-table td:nth-child(2) {
+        width: 40%;
+    }
+    
+    .courses-table th:nth-child(3), 
+    .courses-table td:nth-child(3),
+    .courses-table th:nth-child(4), 
+    .courses-table td:nth-child(4) {
+        width: 15%;
+    }
+    
+    .courses-heading {
+        font-size: 1.1rem;
+    }
+    
+    /* Fix footer on small screens */
+    footer {
+        flex-direction: column;
+        padding: 15px 0;
+    }
+    
+    .footer-section {
+        margin: 5px 0;
+    }
+    
+    /* More compact sticky controls */
+    .sticky-controls {
+        padding: 6px 8px;
+    }
+}
+
+@media (max-width: 360px) {
+    button {
+        width: 32px;
+        height: 32px;
+        padding: 6px;
+    }
+    
+    .sticky-controls {
+        padding: 6px 5px;
+    }
+    
+    .left-controls {
+        gap: 5px;
+    }
+    
+    .buttons-container {
+        gap: 5px;
+    }
+    
+    .credits-counter {
+        padding: 3px 6px;
+        font-size: 11px;
+    }
+    
+    .credits-counter span {
+        font-size: 12px;
+    }
+    
+    /* Make courses table more compact */
+    .courses-table th, 
+    .courses-table td {
+        padding: 5px 2px;
+        font-size: 11px;
+    }
+}
+
+@media print {
+    header, .controls, .download-options, footer, button, #search-field, .sticky-controls, .back-to-top {
+        display: none !important;
+    }
+    
+    .timetable-container {
+        box-shadow: none;
+        padding: 0;
+    }
+    
+    body {
+        background-color: white;
+    }
+}
